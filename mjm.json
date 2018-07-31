@@ -204,7 +204,7 @@
                 "options": {
                   "behavior": "MAX_AGE",
                   "mustRevalidate": false,
-                  "ttl": "2d"
+                  "ttl": "3d"
                 }
               },
               {
