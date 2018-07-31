@@ -1,0 +1,566 @@
+{
+  "accountId": "act_B-C-1FRYVMN",
+  "contractId": "ctr_C-1FRYVV3",
+  "groupId": "grp_93180",
+  "propertyId": "prp_477068",
+  "propertyName": "mjm_hackathon",
+  "propertyVersion": 11,
+  "etag": "491f47b947f3b6372a2e9d930ceb7ea37979113a",
+  "rules": {
+    "name": "default",
+    "children": [
+      {
+        "name": "Performance",
+        "children": [
+          {
+            "name": "JPEG Images",
+            "children": [],
+            "behaviors": [
+              {
+                "name": "adaptiveImageCompression",
+                "options": {
+                  "compressMobile": true,
+                  "compressStandard": true,
+                  "tier1StandardCompressionMethod": "BYPASS",
+                  "tier2MobileCompressionValue": 60,
+                  "tier2StandardCompressionMethod": "BYPASS",
+                  "tier3MobileCompressionMethod": "COMPRESS",
+                  "tier3MobileCompressionValue": 40,
+                  "tier3StandardCompressionMethod": "COMPRESS",
+                  "tier3StandardCompressionValue": 40,
+                  "title_aic_mobile": "",
+                  "title_aic_nonmobile": "",
+                  "tier1MobileCompressionMethod": "BYPASS",
+                  "tier2MobileCompressionMethod": "COMPRESS"
+                }
+              }
+            ],
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "jpg",
+                    "jpeg",
+                    "jpe",
+                    "jif",
+                    "jfif",
+                    "jfi"
+                  ]
+                }
+              }
+            ],
+            "criteriaMustSatisfy": "all",
+            "comments": "Improves load time by applying Adaptive Image Compression (AIC) to all JPEG images. The poorer the connection quality, the more AIC compresses the image files."
+          },
+          {
+            "name": "change origin name",
+            "children": [],
+            "behaviors": [
+              {
+                "name": "akamaizer",
+                "options": {
+                  "enabled": true
+                },
+                "uuid": "6e47121d-6300-4315-8c28-92b99a83122b"
+              },
+              {
+                "name": "akamaizerTag",
+                "options": {
+                  "matchHostname": "origin2.iwishtechdemoswere.cool",
+                  "replacementHostname": "mjm-akamai.iwishtechdemoswere.cool",
+                  "scope": "URL_ATTRIBUTE",
+                  "tagsAttribute": "IMG_SRC",
+                  "replaceAll": true,
+                  "includeTagsAttribute": true
+                },
+                "uuid": "85611e2a-3eca-4e23-9fef-a2779f29d3af"
+              },
+              {
+                "name": "httpStrictTransportSecurity",
+                "options": {
+                  "enable": true,
+                  "maxAge": "ONE_DAY",
+                  "includeSubDomains": true,
+                  "preload": false,
+                  "redirect": true,
+                  "redirectStatusCode": 301
+                }
+              }
+            ],
+            "uuid": "e33d16e0-ae03-46c3-96b6-d9735e21b776",
+            "criteria": [
+              {
+                "name": "contentType",
+                "options": {
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "text/html*",
+                    "image/jpeg"
+                  ],
+                  "matchWildcard": true,
+                  "matchCaseSensitive": false
+                }
+              }
+            ],
+            "criteriaMustSatisfy": "all"
+          },
+          {
+            "name": "Compressible Objects",
+            "children": [],
+            "behaviors": [
+              {
+                "name": "gzipResponse",
+                "options": {
+                  "behavior": "ALWAYS"
+                }
+              }
+            ],
+            "criteria": [
+              {
+                "name": "contentType",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "matchWildcard": true,
+                  "values": [
+                    "text/*",
+                    "application/javascript",
+                    "application/x-javascript",
+                    "application/x-javascript*",
+                    "application/json",
+                    "application/x-json",
+                    "application/*+json",
+                    "application/*+xml",
+                    "application/text",
+                    "application/vnd.microsoft.icon",
+                    "application/vnd-ms-fontobject",
+                    "application/x-font-ttf",
+                    "application/x-font-opentype",
+                    "application/x-font-truetype",
+                    "application/xmlfont/eot",
+                    "application/xml",
+                    "font/opentype",
+                    "font/otf",
+                    "font/eot",
+                    "image/svg+xml",
+                    "image/vnd.microsoft.icon"
+                  ]
+                }
+              }
+            ],
+            "criteriaMustSatisfy": "all",
+            "comments": "Compresses content to improve performance of clients with slow connections. Applies Last Mile Acceleration to requests when the returned object supports gzip compression."
+          }
+        ],
+        "behaviors": [
+          {
+            "name": "enhancedAkamaiProtocol",
+            "options": {
+              "display": ""
+            }
+          },
+          {
+            "name": "http2",
+            "options": {
+              "enabled": ""
+            }
+          },
+          {
+            "name": "allowTransferEncoding",
+            "options": {
+              "enabled": true
+            }
+          },
+          {
+            "name": "removeVary",
+            "options": {
+              "enabled": true
+            }
+          },
+          {
+            "name": "prefetch",
+            "options": {
+              "enabled": true
+            }
+          }
+        ],
+        "criteria": [],
+        "criteriaMustSatisfy": "all",
+        "uuid": "67b1f226-e0e4-477a-a38c-67382548626d",
+        "comments": "Improves the performance of delivering objects to end users. Behaviors in this rule are applied to all requests as appropriate."
+      },
+      {
+        "name": "Offload",
+        "children": [
+          {
+            "name": "CSS and JavaScript",
+            "children": [],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "2d"
+                }
+              },
+              {
+                "name": "prefreshCache",
+                "options": {
+                  "enabled": true,
+                  "prefreshval": 90
+                }
+              },
+              {
+                "name": "prefetchable",
+                "options": {
+                  "enabled": true
+                }
+              }
+            ],
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "css",
+                    "js"
+                  ]
+                }
+              }
+            ],
+            "criteriaMustSatisfy": "any",
+            "comments": "Overrides the default caching behavior for CSS and JavaScript objects that are cached on the edge server. Because these object types are dynamic, the TTL is brief."
+          },
+          {
+            "name": "Static Objects",
+            "children": [],
+            "behaviors": [
+              {
+                "name": "caching",
+                "options": {
+                  "behavior": "MAX_AGE",
+                  "mustRevalidate": false,
+                  "ttl": "7d"
+                }
+              },
+              {
+                "name": "prefreshCache",
+                "options": {
+                  "enabled": true,
+                  "prefreshval": 90
+                }
+              },
+              {
+                "name": "prefetchable",
+                "options": {
+                  "enabled": true
+                }
+              }
+            ],
+            "criteria": [
+              {
+                "name": "fileExtension",
+                "options": {
+                  "matchCaseSensitive": false,
+                  "matchOperator": "IS_ONE_OF",
+                  "values": [
+                    "aif",
+                    "aiff",
+                    "au",
+                    "avi",
+                    "bin",
+                    "bmp",
+                    "cab",
+                    "carb",
+                    "cct",
+                    "cdf",
+                    "class",
+                    "doc",
+                    "dcr",
+                    "dtd",
+                    "exe",
+                    "flv",
+                    "gcf",
+                    "gff",
+                    "gif",
+                    "grv",
+                    "hdml",
+                    "hqx",
+                    "ico",
+                    "ini",
+                    "jpeg",
+                    "jpg",
+                    "mov",
+                    "mp3",
+                    "nc",
+                    "pct",
+                    "pdf",
+                    "png",
+                    "ppc",
+                    "pws",
+                    "swa",
+                    "swf",
+                    "txt",
+                    "vbs",
+                    "w32",
+                    "wav",
+                    "wbmp",
+                    "wml",
+                    "wmlc",
+                    "wmls",
+                    "wmlsc",
+                    "xsd",
+                    "zip",
+                    "pict",
+                    "tif",
+                    "tiff",
+                    "mid",
+                    "midi",
+                    "ttf",
+                    "eot",
+                    "woff",
+                    "woff2",
+                    "otf",
+                    "svg",
+                    "svgz",
+                    "webp",
+                    "jxr",
+                    "jar",
+                    "jp2"
+                  ]
+                }
+              }
+            ],
+            "criteriaMustSatisfy": "any",
+            "comments": "Overrides the default caching behavior for images, music, and similar objects that are cached on the edge server. Because these object types are static, the TTL is long."
+          },
+          {
+            "name": "Uncacheable Responses",
+            "children": [],
+            "behaviors": [
+              {
+                "name": "downstreamCache",
+                "options": {
+                  "behavior": "TUNNEL_ORIGIN"
+                }
+              }
+            ],
+            "criteria": [
+              {
+                "name": "cacheability",
+                "options": {
+                  "matchOperator": "IS_NOT",
+                  "value": "CACHEABLE"
+                }
+              }
+            ],
+            "criteriaMustSatisfy": "all",
+            "comments": "Overrides the default downstream caching behavior for uncacheable object types. Instructs the edge server to pass Cache-Control and/or Expire headers from the origin to the client."
+          }
+        ],
+        "behaviors": [
+          {
+            "name": "caching",
+            "options": {
+              "behavior": "NO_STORE"
+            }
+          },
+          {
+            "name": "cacheError",
+            "options": {
+              "enabled": true,
+              "preserveStale": true,
+              "ttl": "10s"
+            }
+          },
+          {
+            "name": "downstreamCache",
+            "options": {
+              "allowBehavior": "LESSER",
+              "behavior": "ALLOW",
+              "sendHeaders": "CACHE_CONTROL_AND_EXPIRES",
+              "sendPrivate": false
+            }
+          },
+          {
+            "name": "tieredDistribution",
+            "options": {
+              "enabled": true
+            }
+          }
+        ],
+        "criteria": [],
+        "criteriaMustSatisfy": "all",
+        "comments": "Controls caching, which offloads traffic away from the origin. Most objects types are not cached. However, the child rules override this behavior for certain subsets of requests."
+      },
+      {
+        "name": "LetsEncrypt Validation",
+        "children": [],
+        "behaviors": [
+          {
+            "name": "redirectplus",
+            "options": {
+              "destination": "{{builtin.AK_SCHEME}}://dcv.akamai.com{{builtin.AK_PATH}}",
+              "enabled": true,
+              "responseCode": 302
+            }
+          }
+        ],
+        "criteria": [
+          {
+            "name": "path",
+            "options": {
+              "matchCaseSensitive": false,
+              "matchOperator": "MATCHES_ONE_OF",
+              "values": [
+                "/.well-known/acme-challenge*"
+              ]
+            }
+          }
+        ],
+        "criteriaMustSatisfy": "all",
+        "templateLink": "/platformtoolkit/service/ruletemplate/93245466/1?accountId=B-C-1FRYVMN&gid=93180&ck=18.5"
+      },
+      {
+        "name": "Redirect to HTTPS",
+        "children": [],
+        "behaviors": [
+          {
+            "name": "redirect",
+            "options": {
+              "queryString": "APPEND",
+              "responseCode": 301,
+              "destinationHostname": "SAME_AS_REQUEST",
+              "destinationPath": "SAME_AS_REQUEST",
+              "destinationProtocol": "HTTPS",
+              "mobileDefaultChoice": "DEFAULT"
+            }
+          }
+        ],
+        "criteria": [
+          {
+            "name": "requestProtocol",
+            "options": {
+              "value": "HTTP"
+            }
+          }
+        ],
+        "criteriaMustSatisfy": "all",
+        "comments": "Redirect to the same URL on HTTPS protocol, issuing a 301 response code (Moved Permanently). You may change the response code to 302 if needed."
+      }
+    ],
+    "behaviors": [
+      {
+        "name": "origin",
+        "options": {
+          "cacheKeyHostname": "ORIGIN_HOSTNAME",
+          "compress": true,
+          "enableTrueClientIp": false,
+          "forwardHostHeader": "REQUEST_HOST_HEADER",
+          "httpPort": 80,
+          "originType": "CUSTOMER",
+          "hostname": "origin2.iwishtechdemoswere.cool",
+          "originCertificate": "",
+          "verificationMode": "CUSTOM",
+          "ports": "",
+          "httpsPort": 443,
+          "originSni": true,
+          "customValidCnValues": [
+            "{{Origin Hostname}}",
+            "{{Forward Host Header}}"
+          ],
+          "originCertsToHonor": "CUSTOM_CERTIFICATES",
+          "customCertificates": [
+            {
+              "subjectCN": "origin2.iwishtechdemoswere.cool",
+              "subjectAlternativeNames": [
+                "origin2.iwishtechdemoswere.cool",
+                "test2.iwishtechdemoswere.cool"
+              ],
+              "subjectRDNs": {
+                "CN": "origin2.iwishtechdemoswere.cool"
+              },
+              "issuerRDNs": {
+                "C": "US",
+                "O": "Let's Encrypt",
+                "CN": "Let's Encrypt Authority X3"
+              },
+              "notBefore": 1532962584000,
+              "notAfter": 1540738584000,
+              "sigAlgName": "SHA256withRSA",
+              "publicKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnSztPftSNR0qJ79K1SJJP/s6/Jjdb7gJZqv07AFhWHgdk8m36omJji46AknwLisbc2HKuTC/1lXvcy5Nd7dnxjvVX2VI++0tIoK4VI6q5+IGL592zLMy8K9Vt9kZi646fRO9d3zcrj/BDAddNE6S7JrS2s3tALzl2FyldSwk4CgG7D/lSGBHVh7wKZsqjl7AhTXDSYhtBqqDyU54mYgH9HS+e1RgBhHmvIimG1aQrogAFPXaVaKJB5sNgVPOiIDsd4fKxueAbvsI0szUSDWQ5bFnx5Cd8kZFtlBXZ5/iWudvncD9E5YzFECTu4OyXiLq8rU51UvGl9HFS6Li8nx8nQIDAQAB",
+              "publicKeyAlgorithm": "RSA",
+              "publicKeyFormat": "X.509",
+              "serialNumber": 3.4428588017527737e+41,
+              "version": 3,
+              "sha1Fingerprint": "4937e2639482371feda2ca0abfbebf5d47ebe9f6",
+              "pemEncodedCert": "-----BEGIN CERTIFICATE-----\nMIIGSTCCBTGgAwIBAgISA/PD6JseHSNfFcnPNxXUC1UMMA0GCSqGSIb3DQEBCwUA\nMEoxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MSMwIQYDVQQD\nExpMZXQncyBFbmNyeXB0IEF1dGhvcml0eSBYMzAeFw0xODA3MzAxNDU2MjRaFw0x\nODEwMjgxNDU2MjRaMCoxKDAmBgNVBAMTH29yaWdpbjIuaXdpc2h0ZWNoZGVtb3N3\nZXJlLmNvb2wwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdLO09+1I1\nHSonv0rVIkk/+zr8mN1vuAlmq/TsAWFYeB2TybfqiYmOLjoCSfAuKxtzYcq5ML/W\nVe9zLk13t2fGO9VfZUj77S0igrhUjqrn4gYvn3bMszLwr1W32RmLrjp9E713fNyu\nP8EMB100TpLsmtLaze0AvOXYXKV1LCTgKAbsP+VIYEdWHvApmyqOXsCFNcNJiG0G\nqoPJTniZiAf0dL57VGAGEea8iKYbVpCuiAAU9dpVookHmw2BU86IgOx3h8rG54Bu\n+wjSzNRINZDlsWfHkJ3yRkW2UFdnn+Ja52+dwP0TljMUQJO7g7JeIurytTnVS8aX\n0cVLouLyfHydAgMBAAGjggNHMIIDQzAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYw\nFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFI61\nz64U0ezh1ZKHEarsHkr55IfZMB8GA1UdIwQYMBaAFKhKamMEfd265tE5t6ZFZe/z\nqOyhMG8GCCsGAQUFBwEBBGMwYTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AuaW50\nLXgzLmxldHNlbmNyeXB0Lm9yZzAvBggrBgEFBQcwAoYjaHR0cDovL2NlcnQuaW50\nLXgzLmxldHNlbmNyeXB0Lm9yZy8wSQYDVR0RBEIwQIIfb3JpZ2luMi5pd2lzaHRl\nY2hkZW1vc3dlcmUuY29vbIIddGVzdDIuaXdpc2h0ZWNoZGVtb3N3ZXJlLmNvb2ww\ngf4GA1UdIASB9jCB8zAIBgZngQwBAgEwgeYGCysGAQQBgt8TAQEBMIHWMCYGCCsG\nAQUFBwIBFhpodHRwOi8vY3BzLmxldHNlbmNyeXB0Lm9yZzCBqwYIKwYBBQUHAgIw\ngZ4MgZtUaGlzIENlcnRpZmljYXRlIG1heSBvbmx5IGJlIHJlbGllZCB1cG9uIGJ5\nIFJlbHlpbmcgUGFydGllcyBhbmQgb25seSBpbiBhY2NvcmRhbmNlIHdpdGggdGhl\nIENlcnRpZmljYXRlIFBvbGljeSBmb3VuZCBhdCBodHRwczovL2xldHNlbmNyeXB0\nLm9yZy9yZXBvc2l0b3J5LzCCAQUGCisGAQQB1nkCBAIEgfYEgfMA8QB2AFWB1MIW\nkDYBSuoLm1c8U/DA5Dh4cCUIFy+jqh0HE9MMAAABZOvnpzsAAAQDAEcwRQIhAMv8\n3KE8YQlUvoVOrTB/uQVSYgU+DkXDyc2EXupK3RaLAiBPlyEr6J6GG+1phIQYu4Pd\n+OGrlQcQTqR2AgYV3eicKQB3ACk8UZZUyDlluqpQ/FgH1Ldvv1h6KXLcpMMM9OVF\nR/R4AAABZOvnqRsAAAQDAEgwRgIhAOQBjo6Z2xLtUHJWp5pGWsCaPwvf7axGPCvO\nl6VxxwNdAiEAhZN5zcLLj5Nkg3MQsxb8DAlFI4SFs/0qcRh1iwWfvCwwDQYJKoZI\nhvcNAQELBQADggEBAGJ3Kf2vgmWTAOJ/ha1jKj9PRN8yl8GSG/Hpubz8QEJw8FPj\n4T7DEzz9rWqnuRAsxxLmZqpQW3MGyu+tIAomkYX/RrDqZlvTmBM5tgIBmF/DLPlm\nvf+U99l5b5ioCkVkG/BHC539dHdMD2umaJo4zbT6ucJbPReUUaGN2/ewhsHm74Dm\nFZsxY1TeWyXwL395VQGfg8EWCutkg/xhyONueLLCwAim8PGL7bXfIZuv65yt/bt3\nLz6/Kdmle7tz/8SnsS6V/gZScyp77VGzvitbxW4gdNlBPg61a5vskuIM/IX4tLMs\nQLzRiWiHtI32vBkdoIdnKt82hp3QZct77jB3iR4=\n-----END CERTIFICATE-----\n",
+              "canBeLeaf": true,
+              "canBeCA": false,
+              "selfSigned": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "cpCode",
+        "options": {
+          "value": {
+            "id": 735263,
+            "description": "mjm.hackathon",
+            "products": [
+              "SPM"
+            ],
+            "createdDate": 1532959952000,
+            "name": "mjm.hackathon"
+          }
+        }
+      },
+      {
+        "name": "allowPost",
+        "options": {
+          "allowWithoutContentLength": false,
+          "enabled": true
+        }
+      },
+      {
+        "name": "realUserMonitoring",
+        "options": {
+          "enabled": true
+        }
+      }
+    ],
+    "uuid": "default",
+    "options": {
+      "is_secure": true
+    },
+    "variables": [],
+    "comments": "The behaviors in the Default Rule apply to all requests for the property hostname(s) unless another rule overrides the Default Rule settings."
+  },
+  "warnings": [
+    {
+      "type": "https://problems.luna.akamaiapis.net/papi/v0/validation/validation_message.ssl_custom_warning_test_staging",
+      "errorLocation": "#/rules/behaviors/0",
+      "detail": "If you are changing your `Origin Server` SSL Certificate Verification settings it is strongly recommended that you test on Staging before activating on Production. Failure to test on Staging may result in a service outage."
+    },
+    {
+      "type": "https://problems.luna.akamaiapis.net/papi/v0/validation/validation_message.performance_warning",
+      "errorLocation": "#/rules/children/0/children/1/behaviors/0",
+      "detail": "`Akamaizer` is not recommended for ongoing, continual production usage for any site serving more than 100 hits per second."
+    },
+    {
+      "title": "Unstable rule format",
+      "type": "https://problems.luna.akamaiapis.net/papi/v0/unstable_rule_format",
+      "detail": "This property is using `latest` rule format, which is designed to reflect interface changes immediately. We suggest converting the property to a stable rule format such as `v2018-02-27` to minimize the risk of interface changes breaking your API client program.",
+      "currentRuleFormat": "latest",
+      "suggestedRuleFormat": "v2018-02-27"
+    }
+  ],
+  "ruleFormat": "latest"
+}
